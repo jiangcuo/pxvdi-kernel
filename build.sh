@@ -48,12 +48,12 @@ build(){
 
     rm -rf $DIR/build/.git
 
-    make  ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" $DEFCONFIG
-    ./scripts/kconfig/merge_config.sh -m .config  $DIR/config/$ARCH.kconfig
-    ./scripts/kconfig/merge_config.sh -m .config  $DIR/config/common.kconfig
-    make ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" olddefconfig
+    ARCH="$ARCH" make CROSS_COMPILE="$CROSS_COMPILE" $DEFCONFIG
+    ARCH="$ARCH" ./scripts/kconfig/merge_config.sh -m .config  $DIR/config/common.kconfig
+    ARCH="$ARCH" ./scripts/kconfig/merge_config.sh -m .config  $DIR/config/$ARCH.kconfig
+    ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" make olddefconfig
 
-    make  ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="" bindeb-pkg -j $(nproc) 
+    ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" make LOCALVERSION="" bindeb-pkg -j $(nproc) 
 }
 
 build
